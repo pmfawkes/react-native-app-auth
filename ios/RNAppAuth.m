@@ -36,6 +36,7 @@ RCT_REMAP_METHOD(authorize,
                  clientId: (NSString *) clientId
                  clientSecret: (NSString *) clientSecret
                  scopes: (NSArray *) scopes
+                 useNonce: (BOOL *) useNonce
                  additionalParameters: (NSDictionary *_Nullable) additionalParameters
                  serviceConfiguration: (NSDictionary *_Nullable) serviceConfiguration
                  useNonce: (BOOL *) useNonce
