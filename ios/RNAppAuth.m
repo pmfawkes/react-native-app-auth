@@ -156,8 +156,8 @@ RCT_REMAP_METHOD(refresh,
   // generates the code_challenge per spec https://tools.ietf.org/html/rfc7636#section-4.2
   // code_challenge = BASE64URL-ENCODE(SHA256(ASCII(code_verifier)))
   // NB. the ASCII conversion on the code_verifier entropy was done at time of generation.
-    NSData *sha265Verifier = [OIDTokenUtilities sha265:codeVerifier];
-  return [OIDTokenUtilities encodeBase64urlNoPadding:sha265Verifier];
+  NSData *sha256Verifier = [OIDTokenUtilities sha265:codeVerifier];
+  return [OIDTokenUtilities encodeBase64urlNoPadding:sha256Verifier];
 }
 
 /*
@@ -175,8 +175,8 @@ RCT_REMAP_METHOD(refresh,
                             reject: (RCTPromiseRejectBlock)  reject
 {
 
-    NSString *codeVerifier = usePKCE ? [[self class] generateCodeVerifier] : nil;
-    NSString *codeChallenge = usePKCE ? [[self class] codeChallengeS256ForVerifier:codeVerifier] : nil;
+    NSString *codeVerifier = [[self class] generateCodeVerifier];
+    NSString *codeChallenge = [[self class] codeChallengeS256ForVerifier:codeVerifier];
     NSString *nonce = useNonce ? [[self class] generateState] : nil;
 
     // builds authentication request
@@ -192,7 +192,7 @@ RCT_REMAP_METHOD(refresh,
                                                      nonce:nonce
                                               codeVerifier:codeVerifier
                                              codeChallenge:codeChallenge
-                                      codeChallengeMethod: usePKCE ? OIDOAuthorizationRequestCodeChallengeMethodS256 : nil
+                                      codeChallengeMethod:OIDOAuthorizationRequestCodeChallengeMethodS256
                                       additionalParameters:additionalParameters];
 
     // performs authentication request
