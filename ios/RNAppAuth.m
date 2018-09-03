@@ -184,6 +184,7 @@ RCT_REMAP_METHOD(refresh,
                                                   clientId:clientId
                                               clientSecret:clientSecret
                                                      scope:[OIDScopeUtilities scopesWithArray:scopes]
+                                                  useNonce:useNonce
                                                redirectURL:[NSURL URLWithString:redirectUrl]
                                               responseType:OIDResponseTypeCode
                                                      state:[[self class] generateState]
