@@ -33,7 +33,10 @@ describe('AppAuth', () => {
     serviceConfiguration: null,
     scopes: ['my-scope'],
     useNonce: true,
+<<<<<<< HEAD
     usePKCE: true,
+=======
+>>>>>>> fix failing test
   };
 
   describe('authorize', () => {
@@ -88,6 +91,7 @@ describe('AppAuth', () => {
         config.clientId,
         config.clientSecret,
         config.scopes,
+        config.useNonce,
         config.additionalParameters,
         config.serviceConfiguration,
         config.useNonce,
