@@ -211,7 +211,11 @@ RCT_REMAP_METHOD(refresh,
                                                        strongSelf->_currentSession = nil;
                                                        if (authState) {
                                                            resolve([self formatResponse:authState.lastTokenResponse
+<<<<<<< HEAD
                                                                withAuthResponse:authState.lastAuthorizationResponse]);
+=======
+                                                               withAdditionalParameters:authState.lastAuthorizationResponse.additionalParameters]);
+>>>>>>> support additional parameters in the response
                                                        } else {
                                                            reject(@"RNAppAuth Error", [error localizedDescription], error);
                                                        }
@@ -278,11 +282,16 @@ RCT_REMAP_METHOD(refresh,
  *  and turn them into an extended token response format to pass to JavaScript caller
  */
 - (NSDictionary*)formatResponse: (OIDTokenResponse*) response
+<<<<<<< HEAD
        withAuthResponse:(OIDAuthorizationResponse*) authResponse {
+=======
+       withAdditionalParameters:(NSDictionary*) params{
+>>>>>>> support additional parameters in the response
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     dateFormat.timeZone = [NSTimeZone timeZoneWithAbbreviation: @"UTC"];
     [dateFormat setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
     [dateFormat setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
+<<<<<<< HEAD
 
     return @{@"accessToken": response.accessToken ? response.accessToken : @"",
              @"accessTokenExpirationDate": response.accessTokenExpirationDate ? [dateFormat stringFromDate:response.accessTokenExpirationDate] : @"",
@@ -292,6 +301,15 @@ RCT_REMAP_METHOD(refresh,
              @"refreshToken": response.refreshToken ? response.refreshToken : @"",
              @"tokenType": response.tokenType ? response.tokenType : @"",
              @"scopes": authResponse.scope ? [authResponse.scope componentsSeparatedByString:@" "] : [NSArray new],
+=======
+    
+    return @{@"accessToken": response.accessToken ? response.accessToken : @"",
+             @"accessTokenExpirationDate": response.accessTokenExpirationDate ? [dateFormat stringFromDate:response.accessTokenExpirationDate] : @"",
+             @"additionalParameters": params,
+             @"idToken": response.idToken ? response.idToken : @"",
+             @"refreshToken": response.refreshToken ? response.refreshToken : @"",
+             @"tokenType": response.tokenType ? response.tokenType : @"",
+>>>>>>> support additional parameters in the response
              };
 }
 
