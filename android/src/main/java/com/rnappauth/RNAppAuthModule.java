@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -33,8 +34,13 @@ import net.openid.appauth.TokenRequest;
 import net.openid.appauth.connectivity.ConnectionBuilder;
 import net.openid.appauth.connectivity.DefaultConnectionBuilder;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class RNAppAuthModule extends ReactContextBaseJavaModule implements ActivityEventListener {
 
