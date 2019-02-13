@@ -210,7 +210,7 @@ RCT_REMAP_METHOD(refresh,
                                                        strongSelf->_currentSession = nil;
                                                        if (authState) {
                                                            resolve([self  formatResponse:authState.lastTokenResponse
-                                                                        withAuthResponse:authState.lastAuthorizationResponse]);
+                                                                        withAuthResponse:authState.lastAuthorizationResponse
                                                                 withAdditionalParameters:authState.lastAuthorizationResponse.additionalParameters]);
                                                        } else {
                                                            reject(@"RNAppAuth Error", [error localizedDescription], error);
