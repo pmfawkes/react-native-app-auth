@@ -156,8 +156,8 @@ RCT_REMAP_METHOD(refresh,
   // generates the code_challenge per spec https://tools.ietf.org/html/rfc7636#section-4.2
   // code_challenge = BASE64URL-ENCODE(SHA256(ASCII(code_verifier)))
   // NB. the ASCII conversion on the code_verifier entropy was done at time of generation.
-  NSData *sha256Verifier = [OIDTokenUtilities sha256:codeVerifier];
-  return [OIDTokenUtilities encodeBase64urlNoPadding:sha256Verifier];
+  NSData *sha265Verifier = [OIDTokenUtilities sha265:codeVerifier];
+  return [OIDTokenUtilities encodeBase64urlNoPadding:sha265Verifier];
 }
 
 /*
@@ -185,7 +185,6 @@ RCT_REMAP_METHOD(refresh,
                                                   clientId:clientId
                                               clientSecret:clientSecret
                                                      scope:[OIDScopeUtilities scopesWithArray:scopes]
-                                                  useNonce:useNonce
                                                redirectURL:[NSURL URLWithString:redirectUrl]
                                               responseType:OIDResponseTypeCode
                                                      state:[[self class] generateState]
@@ -210,12 +209,9 @@ RCT_REMAP_METHOD(refresh,
                                                        typeof(self) strongSelf = weakSelf;
                                                        strongSelf->_currentSession = nil;
                                                        if (authState) {
-                                                           resolve([self formatResponse:authState.lastTokenResponse
-<<<<<<< HEAD
-                                                               withAuthResponse:authState.lastAuthorizationResponse]);
-=======
-                                                               withAdditionalParameters:authState.lastAuthorizationResponse.additionalParameters]);
->>>>>>> support additional parameters in the response
+                                                           resolve([self  formatResponse:authState.lastTokenResponse
+                                                                        withAuthResponse:authState.lastAuthorizationResponse]);
+                                                                withAdditionalParameters:authState.lastAuthorizationResponse.additionalParameters]);
                                                        } else {
                                                            reject(@"RNAppAuth Error", [error localizedDescription], error);
                                                        }
@@ -281,35 +277,23 @@ RCT_REMAP_METHOD(refresh,
  * Take raw OIDTokenResponse and additional paramaeters from an OIDAuthorizationResponse
  *  and turn them into an extended token response format to pass to JavaScript caller
  */
-- (NSDictionary*)formatResponse: (OIDTokenResponse*) response
-<<<<<<< HEAD
-       withAuthResponse:(OIDAuthorizationResponse*) authResponse {
-=======
-       withAdditionalParameters:(NSDictionary*) params{
->>>>>>> support additional parameters in the response
+- (NSDictionary*) formatResponse: (OIDTokenResponse*) response
+                withAuthResponse:(OIDAuthorizationResponse*) authResponse
+        withAdditionalParameters:(NSDictionary*) params {
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     dateFormat.timeZone = [NSTimeZone timeZoneWithAbbreviation: @"UTC"];
     [dateFormat setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
     [dateFormat setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
-<<<<<<< HEAD
 
     return @{@"accessToken": response.accessToken ? response.accessToken : @"",
              @"accessTokenExpirationDate": response.accessTokenExpirationDate ? [dateFormat stringFromDate:response.accessTokenExpirationDate] : @"",
              @"authorizeAdditionalParameters": authResponse.additionalParameters,
              @"tokenAdditionalParameters": response.additionalParameters,
-             @"idToken": response.idToken ? response.idToken : @"",
-             @"refreshToken": response.refreshToken ? response.refreshToken : @"",
-             @"tokenType": response.tokenType ? response.tokenType : @"",
-             @"scopes": authResponse.scope ? [authResponse.scope componentsSeparatedByString:@" "] : [NSArray new],
-=======
-    
-    return @{@"accessToken": response.accessToken ? response.accessToken : @"",
-             @"accessTokenExpirationDate": response.accessTokenExpirationDate ? [dateFormat stringFromDate:response.accessTokenExpirationDate] : @"",
              @"additionalParameters": params,
              @"idToken": response.idToken ? response.idToken : @"",
              @"refreshToken": response.refreshToken ? response.refreshToken : @"",
              @"tokenType": response.tokenType ? response.tokenType : @"",
->>>>>>> support additional parameters in the response
+             @"scopes": authResponse.scope ? [authResponse.scope componentsSeparatedByString:@" "] : [NSArray new],
              };
 }
 
